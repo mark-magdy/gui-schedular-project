@@ -177,17 +177,25 @@ private slots:
     void updateTimer() {
         // Calculate max time
         auto processSnapshot = getProcessSnapshot();
-
+         scheduler * sched = scheduler::getInstance();
+          
+    
         float maxTime = 0;
         for (const auto& process : processSnapshot) {
-			maxTime += process->getBurstTime();
+			/*maxTime += process->getBurstTime();*/
+            maxTime = max(maxTime, process->getArrivalTime()); 
+			if (process->getFinished()) {
+				maxTime = max(maxTime, (float) (process->getTurnAroundTime()+process->getArrivalTime()));
+			}
+            if (process->getRemainingTime() > 0 )
+			maxTime = max(maxTime, SingletonCounter::getInstance().getValue() + process->getRemainingTime());
         }
         currentTime = livePreview ? SingletonCounter::getInstance().increment() : maxTime;
 
         // Get snapshot safely
         updateUI();
 
-        if (currentTime > maxTime +1) {
+        if (currentTime > maxTime+5) {
             timer->stop();
             finished = true; 
             updatePerformanceMetrics();

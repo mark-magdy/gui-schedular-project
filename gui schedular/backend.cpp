@@ -105,24 +105,30 @@ void scheduler::inProgress(algorithm& algo) {
 
 	time++;
 
-	while (time < 2000) {
+	while (time < 20000) {
 		std::cout << "Time is: " << time << std::endl;
 		
 		{
 			std::lock_guard<std::mutex> lock(processMutex);
+			
+				
 			if (!ready_queue.empty()) {
-				for (int i = 0; i < incoming.size(); i++) {           //push the arrived process in ready queue
-					process* p = incoming[i];
-					if (p->getArrivalTime() <= time) {
-						ready_queue.push_back(p);
-						incoming.erase(incoming.begin() + i);
-						i--;
-					}
-				}
 				algo.updateProcesses(ready_queue[0], time);
 				std::cout << ready_queue[0]->getName() << std::endl;
 				algo.updateReadyQ(ready_queue, time);
 			}
+				for (int i = 0; i < incoming.size(); i++) {           //push the arrived process in ready queue
+
+					process* p = incoming[i];
+					if (p->getArrivalTime() <= time) {
+						ready_queue.push_back(p);
+						if (ready_queue.size() == 1) {
+							ready_queue[0]->setStartTime(time);
+						}
+						incoming.erase(incoming.begin() + i);
+						i--;
+					}
+				}
 		}
 
 		if (live) {
