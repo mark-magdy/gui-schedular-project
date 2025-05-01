@@ -105,7 +105,7 @@ void scheduler::inProgress(algorithm& algo) {
 
 	time++;
 
-	while (time < 20) {
+	while (time < 2000) {
 		std::cout << "Time is: " << time << std::endl;
 		
 		{
@@ -390,6 +390,7 @@ void Priority::initReadyQ(vector<process*>& ready_vec) {
 		}
 	);
 }
+
 void Priority::updateProcesses(process* proc, int time) {
 	float start = proc->getStartTime();
 	float burst = proc->getBurstTime();

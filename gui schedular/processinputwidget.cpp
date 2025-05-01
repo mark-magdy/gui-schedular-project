@@ -14,8 +14,8 @@ ProcessInputWidget::ProcessInputWidget(QWidget* parent) : QWidget(parent) {
     layout->addRow("Name:", nameEdit);
 
     prioritySpin = new QSpinBox();
-    prioritySpin->setRange(1, 10);
-    layout->addRow("Priority (1-10):", prioritySpin);
+    prioritySpin->setRange(0, 10);
+    layout->addRow("Priority (0-10):", prioritySpin);
 
    /* arrivalSpin = new QDoubleSpinBox();
     arrivalSpin->setRange(0, 100);
